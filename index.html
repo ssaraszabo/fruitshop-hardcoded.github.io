@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fruit Shop</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .quantity-controls button {
+      padding: 5px 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background: #ddd;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .quantity-display {
+      min-width: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .add-to-cart {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to the Fruit Shop!</h1>
+    <div class="cart-icon">
+      <a href="cart.html">🛒 <span id="cart-count">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="fruit-list">
+
+      <!-- Apple -->
+      <div class="fruit" data-name="Apple" data-price="1.00">
+        <img src="apple1.jpg" alt="Apple">
+        <h2>Apple</h2>
+        <p>$1.00 each</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <!-- Banana -->
+      <div class="fruit" data-name="Banana" data-price="0.50">
+        <img src="banana1.jpg" alt="Banana">
+        <h2>Banana</h2>
+        <p>$0.50 each</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <!-- Strawberry -->
+      <div class="fruit" data-name="Strawberry" data-price="2.00">
+        <img src="strawberry.jpg" alt="Strawberry">
+        <h2>Strawberry</h2>
+        <p>$2.00 per pack</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <!-- Raspberries -->
+      <div class="fruit" data-name="Raspberries" data-price="3.00">
+        <img src="rasberries.jpg" alt="Raspberries">
+        <h2>Raspberries</h2>
+        <p>$3.00 per pack</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <!-- Pear -->
+      <div class="fruit" data-name="Pear" data-price="2.50">
+        <img src="pear.jpg" alt="Pear">
+        <h2>Pear</h2>
+        <p>$2.50 each</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <!-- Grapes -->
+      <div class="fruit" data-name="Grapes" data-price="1.50">
+        <img src="grapes1.jpg" alt="Grapes">
+        <h2>Grapes</h2>
+        <p>$1.50 per bunch</p>
+        <div class="quantity-controls">
+          <button class="decrease">−</button>
+          <span class="quantity-display">0</span>
+          <button class="increase">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Fruit Shop</p>
+  </footer>
+
+  <script>
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
+      document.getElementById('cart-count').textContent = totalQty;
+    }
+
+    document.querySelectorAll('.fruit').forEach(fruit => {
+      const incBtn = fruit.querySelector('.increase');
+      const decBtn = fruit.querySelector('.decrease');
+      const qtyDisplay = fruit.querySelector('.quantity-display');
+      const addToCartBtn = fruit.querySelector('.add-to-cart');
+
+      incBtn.onclick = () => {
+        qtyDisplay.textContent = parseInt(qtyDisplay.textContent) + 1;
+      };
+
+      decBtn.onclick = () => {
+        const current = parseInt(qtyDisplay.textContent);
+        if (current > 0) qtyDisplay.textContent = current - 1;
+      };
+
+      addToCartBtn.onclick = () => {
+        const name = fruit.dataset.name;
+        const price = parseFloat(fruit.dataset.price);
+        const quantity = parseInt(qtyDisplay.textContent);
+        if (quantity === 0) return;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.name === name);
+        if (existingItem) {
+          existingItem.quantity += quantity;
+        } else {
+          cart.push({ name, price, quantity });
+        }
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        qtyDisplay.textContent = '0';
+        updateCartCount();
+      };
+    });
+
+    updateCartCount();
+  </script>
+</body>
+</html>
