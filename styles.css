@@ -68,12 +68,11 @@ header {
 }
 
 .fruit img {
-  max-width: 100%;
-  height: auto;
+  width: 70%;
+  height: 440px;
+  object-fit: cover;
   border-radius: 6px;
   margin-bottom: 12px;
-  object-fit: cover;
-  aspect-ratio: 4 / 3;
 }
 
 .fruit h2 {
